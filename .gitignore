@@ -2,6 +2,7 @@
 # Laravel 5 & Lumen specific
 bootstrap/cache/
 .env
+storage/
 vendor/
 
 # Frontend Libraries
