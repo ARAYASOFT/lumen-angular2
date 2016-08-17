@@ -6,3 +6,4 @@ vendor/
 
 # Frontend Libraries
 node_modules/
+typings
