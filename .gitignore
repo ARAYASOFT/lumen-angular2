@@ -8,3 +8,5 @@ vendor/
 # Frontend Libraries
 node_modules/
 typings
+public/css
+public/js

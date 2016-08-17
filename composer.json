@@ -6,7 +6,11 @@
   "type": "project",
   "require": {
     "php": ">=5.5.9",
+    "barryvdh/laravel-ide-helper": "^2.2",
+    "barryvdh/laravel-cors": "^0.8.1",
+    "dingo/api": "1.0.*@dev",
     "laravel/lumen-framework": "5.2.*",
+    "tymon/jwt-auth": "1.0.0-alpha.2",
     "vlucas/phpdotenv": "~2.2"
   },
   "require-dev": {
@@ -28,6 +32,10 @@
   "scripts": {
     "post-root-package-install": [
       "php -r \"copy('.env.example', '.env');\""
+    ],
+    "post-update-cmd": [
+      "php artisan ide-helper:generate",
+      "php artisan ide-helper:meta"
     ]
   }
 }

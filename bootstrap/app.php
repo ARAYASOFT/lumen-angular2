@@ -23,9 +23,17 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->configure('app');
 
-// $app->withEloquent();
+$app->withFacades();
+
+$app->withEloquent();
+
+/*
+ * Facades
+ */
+class_alias(Dingo\Api\Facade\API::class, 'API');
+class_alias(Dingo\Api\Facade\Route::class, 'Route');
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +86,70 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+// IDE Helper
+if($app->environment() !== 'production'){
+    $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+}
+
+/**
+ * JSON Web Tokens
+ * https://github.com/tymondesigns/jwt-auth/wiki
+ */
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->configure('jwt');
+
+/**
+ * Dingo/Api
+ * https://github.com/dingo/api/wiki
+ */
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+
+app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
+
+if ($app->environment() !== 'production') {
+    $app[Dingo\Api\Exception\Handler::class]->setErrorFormat([
+        'error' => [
+            'message'     => ':message',
+            'errors'      => ':errors',
+            'code'        => ':code',
+            'status_code' => ':status_code',
+            'debug'       => ':debug'
+        ]
+    ]);
+}
+
+/**
+ * CORS
+ */
+$app->register(Barryvdh\Cors\LumenServiceProvider::class);
+$app->configure('cors');
+
+/*
+|--------------------------------------------------------------------------
+| Handle Exceptions
+|--------------------------------------------------------------------------
+|
+| Register all custom exception handlers here. For more information
+| and documentation, please visit the following link.
+|
+| https://github.com/dingo/api/wiki/Errors-And-Error-Responses
+|
+*/
+app('Dingo\Api\Exception\Handler')->register(function (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+    return response()->json(['error' => 'token_expired'], $e->getCode() ?: 401);
+});
+app('Dingo\Api\Exception\Handler')->register(function (\Tymon\JWTAuth\Exceptions\TokenInvalidException  $e) {
+    return response()->json(['error' => 'token_invalid'], $e->getCode() ?: 401);
+});
+app('Dingo\Api\Exception\Handler')->register(function (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+    return response()->json(['error' => 'token_absent'], $e->getCode() ?: 401);
+});
 
 /*
 |--------------------------------------------------------------------------
