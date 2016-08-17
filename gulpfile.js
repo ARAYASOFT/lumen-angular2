@@ -54,7 +54,7 @@ Elixir.extend('vendor', function (src, output) {
 Elixir(function(mix) {
     mix.sass('app.scss');
 
-    mix.copy('resources/assets/images/', 'public/images/');
+    mix.copy('resources/assets/images', 'public/images/');
 
 
 
@@ -74,6 +74,6 @@ Elixir(function(mix) {
     mix.vendor(libs, 'public/vendor/');
 
     // Compile Typescript
-    mix.angular2(['resources/assets/typescript/**/*'], 'public/js/');
+    mix.angular2(['resources/assets/typescript'], 'public/js/');
 
 });
