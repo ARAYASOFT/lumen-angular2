@@ -46,7 +46,7 @@ Elixir.extend('vendor', function (src, output) {
 
         return gulp.src(paths.src.path, {base: './node_modules/'})
             .pipe(gulp.dest(paths.output.path));
-    }, paths).watch('node_modules/**/*');
+    }, paths).watch('package.json');
 
 
 });
@@ -55,7 +55,7 @@ Elixir(function(mix) {
     mix.sass('app.scss');
 
     mix.copy('resources/assets/images', 'public/images/');
-
+    mix.copy('resources/assets/js', 'public/js/');
 
 
     // Copy vendor scripts
@@ -63,9 +63,6 @@ Elixir(function(mix) {
         'node_modules/@angular',
         'node_modules/angular2-jwt',
         'node_modules/angular2-in-memory-web-api',
-        'node_modules/dropzone',
-        'node_modules/moment',
-        'node_modules/ng2-translate',
         'node_modules/reflect-metadata',
         'node_modules/rxjs',
         'node_modules/systemjs',

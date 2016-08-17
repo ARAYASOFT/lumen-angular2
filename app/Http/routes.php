@@ -19,10 +19,18 @@ $api = app('Dingo\Api\Routing\Router');
 /**
  * API Routes
  * Prefix ("/api/") for all routes is defined in .env
+ *
+ * @param \Dingo\Api\Routing\Router $api
  */
 $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
-    $api = authenticationRoutes($api);
+    /**
+     * @var \Dingo\Api\Routing\Router $api
+     */
+    $api->post('auth', 'App\Http\Controllers\AuthController@login');
+    $api->get('auth', 'App\Http\Controllers\AuthController@verify');
+    $api->delete('auth', 'App\Http\Controllers\AuthController@destroy');
+
 
     // Authentication routes
     // The following command will create these routes.
@@ -32,17 +40,5 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     //   - DELETE /api/users/{id}
     // $api->resource('users', 'App\Http\Controllers\UsersController');
 });
-
-/**
- * @param \Dingo\Api\Routing\Router $api
- * @return \Dingo\Api\Routing\Router
- */
-function authenticationRoutes ($api) {
-    $api->post('auth', 'App\Http\Controllers\AuthController@login');
-    $api->get('auth', 'App\Http\Controllers\AuthController@verify');
-    $api->delete('auth', 'App\Http\Controllers\AuthController@destroy');
-
-    return $api;
-}
 
 $app->get('{slug:.*}', 'AngularController@serve');
