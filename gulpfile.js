@@ -6,6 +6,7 @@ const ts = require('gulp-typescript');
 const sourcemaps  = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
 const minify = require('gulp-minify');
+const dotenv = require('dotenv');
 
 var Task = Elixir.Task;
 var tsProject = ts.createProject('tsconfig.json');
@@ -73,4 +74,7 @@ Elixir(function(mix) {
     // Compile Typescript
     mix.angular2(['resources/assets/typescript'], 'public/js/');
 
+    mix.browserSync({
+        proxy: process.env.BROWSERSYNC_PROXY_URL
+    });
 });
