@@ -3,8 +3,8 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { provide, enableProdMode } from '@angular/core';
 import { HTTP_PROVIDERS, Http } from '@angular/http';
-import { APP_ROUTER_PROVIDERS } from './app.routes';
-import { AppComponent } from './app.component';
+import { APP_ROUTER_PROVIDERS } from './app/app.routes';
+import { AppComponent } from './app/app.component';
 import { AuthHttp, AuthConfig, tokenNotExpired, JwtHelper } from 'angular2-jwt/angular2-jwt';
 import 'rxjs/add/operator/map';
 
