@@ -3,7 +3,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
     selector: 'app',
-    template: `<router-outlet></router-outlet>`,
+    template: `AppComponent <br> <router-outlet></router-outlet>`,
     directives: [ROUTER_DIRECTIVES]
 })
 

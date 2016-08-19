@@ -8,13 +8,15 @@ const concat = require('gulp-concat');
 const minify = require('gulp-minify');
 const dotenv = require('dotenv');
 
+dotenv.config();
+
 var Task = Elixir.Task;
 var tsProject = ts.createProject('tsconfig.json');
 
 /**
  * Custom Task to compile Angular 2
  */
-Elixir.extend('angular2', function(src, output) {
+Elixir.extend('angular2', function(src, output, watch) {
 
     var paths = new Elixir.GulpPaths().src(src).output(output);
 
@@ -30,7 +32,7 @@ Elixir.extend('angular2', function(src, output) {
             .pipe(gulp.dest(paths.output.path))
             .pipe(new Elixir.Notification('Angular 2 compiled.'));
     }, paths)
-        .watch(src);
+        .watch(watch);
 
 });
 
@@ -72,7 +74,7 @@ Elixir(function(mix) {
     mix.vendor(libs, 'public/vendor/');
 
     // Compile Typescript
-    mix.angular2(['resources/assets/typescript'], 'public/js/');
+    mix.angular2(['resources/assets/typescript'], 'public/js/', ['resources/assets/typescript/**/*']);
 
     mix.browserSync({
         proxy: process.env.BROWSERSYNC_PROXY_URL
